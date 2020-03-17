@@ -1,19 +1,20 @@
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
-
+var express = require('express');
+var app = express();
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = 'token.json';
-
+let authentication;
 // Load client secrets from a local file.
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Sheets API.
-  authorize(JSON.parse(content), listMajors);
+  authorize(JSON.parse(content), get_site_info);
 });
 
 /**
@@ -31,6 +32,7 @@ function authorize(credentials, callback) {
   fs.readFile(TOKEN_PATH, (err, token) => {
     if (err) return getNewToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
+    authentication = oAuth2Client;
     callback(oAuth2Client);
   });
 }
@@ -83,10 +85,44 @@ function listMajors(auth) {
       console.log('Name, Major:');
       // Print columns A and E, which correspond to indices 0 and 4.
       rows.map((row) => {
-        console.log(`${row[0]}, ${row[4]}`);
+        console.log(`${row[0]}, ${row[1]}`);
       });
     } else {
       console.log('No data found.');
     }
   });
 }
+async function getSheet(auth,pageTitle){
+    const sheets = google.sheets({version: 'v4', auth});
+    let s = await sheets.spreadsheets.values.get({
+      spreadsheetId: '1c6A2jXyykKjhi6PNUUsZ1F3RJbyn77rb1X6AjzaB92o',
+      range: pageTitle,
+    }).catch(error => {console.log(error)});
+    //console.log(s);
+    let r =s.data;
+    return r;
+    
+}
+async function get_site_info(auth){
+    let sheet = await getSheet(auth,"Site Information");
+    console.log(sheet.values[0]);
+    return sheet.values[0]
+}
+async function get_posts(auth){
+  let sheet = await getSheet(auth,"Posts")
+  return sheet.values;
+}
+/*setup templating */
+app.set('view engine', 'pug')
+/* Routes */
+app.get('/', async(req, res) =>{
+    let data =  await get_site_info(authentication);
+    let posts = await get_posts(authentication);
+    posts.shift();
+    console.log(posts);
+    res.render('index', { title: 'Hey', message: data[1], posts:posts})
+  });
+
+  app.listen(3000, function() {
+    console.log('Example app listening on port 3000!');
+  });
