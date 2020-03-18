@@ -121,9 +121,9 @@ app.get('/', async(req, res) =>{
     let posts = await get_posts(authentication);
     posts.shift();
     console.log(posts);
-    res.render('index', { title: 'Hey', message: data[1], posts:posts})
+    res.render('index', { title: 'Sheets CMS', message: data[1], posts:posts})
   });
 
   app.listen(3000, function() {
-    console.log('Example app listening on port 3000!');
+    console.log("Starting Sheets CMS Server")
   });
