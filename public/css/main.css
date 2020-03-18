@@ -1,0 +1,50 @@
+body {
+    background-color: #a5ffe8;
+    font-family: 'Baloo 2', cursive;
+}
+
+.post {
+    border-bottom: solid 1.5px black;
+    margin-bottom: 4vh;
+}
+
+.post-title {
+    font-size: 1.5em;
+    font-family: 'Roboto', sans-serif;
+}
+
+.post-content {
+    line-height: 2em;
+    font-size: 1.2em;
+}
+
+.post-date {
+    font-size: 1.35em;
+}
+
+.post-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.post-author {
+    font-size: 1.35em;
+}
+
+.title {
+    font-size: 1.25em;
+    margin-left: 5vw;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+.main {
+    width: 65%;
+    margin: auto;
+    display: block;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,14 +1,20 @@
 html
   head
     title= title
+    link(rel='stylesheet',href='https://fonts.googleapis.com/css?family=Baloo+2|Roboto&display=swap',type='text/css')
+    link(rel='stylesheet', href='css/main.css', type='text/css' )
   body
-    h1= message
-    each val in posts
-      div(class="post")
-        h2(class="post-Title")=val[0]
-        div(class="post-Date")
-          p=val[1]
-        div(class="post-author")
-          p=val[2] 
-        div(class="post-content")
-          p=val[3]
+    div(class="title")
+      h1= message
+    content(class="main")
+      each val in posts
+        div(class="post")
+          h2(class="post-title")=val[0]
+          div(class="post-info")
+            div(class="post-author")
+              p=val[2] 
+            div(class="post-date")
+              p=val[1]
+            
+          div(class="post-content")
+            p=val[3]

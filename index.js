@@ -114,6 +114,7 @@ async function get_posts(auth){
 }
 /*setup templating */
 app.set('view engine', 'pug')
+app.use(express.static('public'));
 /* Routes */
 app.get('/', async(req, res) =>{
     let data =  await get_site_info(authentication);
